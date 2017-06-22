@@ -9,7 +9,7 @@ Interface :: Interface(IDirect3DDevice9* device)
 	_font->RestoreDeviceObjects();
 
 	_timeElapsed = 0.0f;
-	_time = 10.0f;
+	_time = 60.0f;
 }
 
 Interface :: ~Interface()

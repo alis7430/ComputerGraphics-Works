@@ -117,8 +117,11 @@ bool Display(float timeDelta)
 
 		D3DXVECTOR3 pos;
 		TheCamera.getPosition(&pos);
-		float height = TheTerrain->getHeight( pos.x, pos.z );
-		pos.y = height + 5.0f; // add height because we're standing up
+		if (pos.x < 300.0f && pos.z < 300.0f)
+		{
+			float height = TheTerrain->getHeight(pos.x, pos.z);
+			pos.y = height + 5.0f; // add height because we're standing up
+		}
 		TheCamera.setPosition(&pos);
 
 		D3DXMATRIX V;
@@ -140,15 +143,16 @@ bool Display(float timeDelta)
 		if( TheTerrain )
 			TheTerrain->draw(&I, false);
 
-		if( FPS )
-			FPS->render(0xffffffff, timeDelta);
-		if (iface)
-			iface->render(0xffffffff, timeDelta, &pos);
-
 		D3DXMATRIX Y;
 		D3DXMatrixIdentity(&Y);
 		Device->SetTransform(D3DTS_WORLD, &Y);
 		Sno->render();
+		
+		if (FPS)
+			FPS->render(0xffffffff, timeDelta);
+		if (iface)
+			iface->render(0xffffffff, timeDelta, &pos);
+
 
 		Device->EndScene();
 		Device->Present(0, 0, 0, 0);

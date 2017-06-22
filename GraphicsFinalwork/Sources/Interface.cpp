@@ -4,7 +4,7 @@
 Interface :: Interface(IDirect3DDevice9* device)
 {
 	_device = device;
-	_font = new CD3DFont("ARBONNIE", 15, 0);
+	_font = new CD3DFont("Terminal", 15, 0);
 	_font->InitDeviceObjects(_device);
 	_font->RestoreDeviceObjects();
 
@@ -36,7 +36,7 @@ bool Interface::render(D3DCOLOR color, float timeDelta, D3DXVECTOR3* Pos)
 			_PosString[14] = '\0';
 			_timeElapsed = 0.0f;
 		}
-		_font->DrawText(20, 40, color, _PosString);
+		_font->DrawText(20, 60, color, _PosString);
 	}
 	return true;
 }

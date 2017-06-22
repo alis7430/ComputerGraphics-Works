@@ -114,7 +114,11 @@ namespace d3d
 		D3DXVECTOR3 _center;
 		float       _radius;
 	};
-
+	struct Ray
+	{
+		D3DXVECTOR3 _origin;
+		D3DXVECTOR3 _direction;
+	};
 	//
 	// Constants
 	//

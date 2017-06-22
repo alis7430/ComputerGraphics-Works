@@ -5,7 +5,7 @@ FPSCounter::FPSCounter(IDirect3DDevice9* device)
 {
 	_device = device;
 
-	_font = new CD3DFont("ARBONNIE", 15, 0);
+	_font = new CD3DFont("Terminal", 15, 0);
 	_font->InitDeviceObjects( _device );
 	_font->RestoreDeviceObjects();
 

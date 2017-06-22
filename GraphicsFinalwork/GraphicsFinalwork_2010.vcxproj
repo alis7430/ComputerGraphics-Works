@@ -46,7 +46,8 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>NotSet</CharacterSet>
+    <PlatformToolset>v140</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|X64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -384,6 +385,9 @@
     <ResourceCompile Include="GraphicsFinalwork.rc" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\GitHub\DirectX9.0_LectureSample\Part III Code\Chapter 15\Pick\pickSample.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="Sources\camera.cpp" />
     <ClCompile Include="Sources\d3dfont.cpp" />
     <ClCompile Include="Sources\d3dutil.cpp" />

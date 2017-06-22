@@ -30,6 +30,7 @@ ID3DXMesh* Sphere = 0;
 D3DXMATRIX World;
 d3d::BoundingSphere BSphere;
 
+int score;
 bool isClicked;
 
 void SetRandomPos(Terrain* T)
@@ -138,9 +139,7 @@ bool Setup()
 	//Create the teapot.
 	D3DXCreateTeapot(Device, &Teapot, 0);
 
-	//Set TeapotPos
-	D3DXMatrixTranslation(&World, 0.0f, 50.0f, 10.0f);
-	BSphere._center = D3DXVECTOR3(0.0f, 50.0f, 10.0f);
+	
 
 	//
 	// Compute the bounding sphere.
@@ -186,6 +185,11 @@ bool Setup()
 	Device->SetSamplerState(0, D3DSAMP_MIPFILTER, D3DTEXF_LINEAR);
 
 
+	//Set TeapotPos
+	D3DXMatrixTranslation(&World, 0.0f, 50.0f, 10.0f);
+	BSphere._center = D3DXVECTOR3(0.0f, 50.0f, 10.0f);
+
+
 	// Set projection matrix.
 
 	D3DXMATRIX proj;
@@ -198,6 +202,9 @@ bool Setup()
 	Device->SetTransform(D3DTS_PROJECTION, &proj);
 
 
+	//set variable.
+
+	score = 0;
 	isClicked = false;
 
 	return true;
@@ -287,8 +294,8 @@ bool Display(float timeDelta)
 		if (FPS)
 			FPS->render(0xffffffff, timeDelta);
 		if (iface)
-			iface->render(0xffffffff, timeDelta, &pos);
-
+			iface->render(0xffffffff, timeDelta, &pos, &score);
+		
 		// Render the teapot.
 		Device->SetTransform(D3DTS_WORLD, &World);
 		Device->SetMaterial(&d3d::YELLOW_MTRL);
@@ -347,11 +354,13 @@ LRESULT CALLBACK d3d::WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		if (RaySphereIntTest(&ray, &BSphere))
 		{
 			::MessageBox(0, "Hit!", "HIT", 0);
+			score++;
 			isClicked = true;
 		}
 
 		break;
 	}
+
 	return ::DefWindowProc(hwnd, msg, wParam, lParam);
 }
 

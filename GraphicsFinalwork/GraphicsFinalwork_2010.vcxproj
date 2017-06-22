@@ -385,9 +385,6 @@
     <ResourceCompile Include="GraphicsFinalwork.rc" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\GitHub\DirectX9.0_LectureSample\Part III Code\Chapter 15\Pick\pickSample.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
     <ClCompile Include="Sources\camera.cpp" />
     <ClCompile Include="Sources\d3dfont.cpp" />
     <ClCompile Include="Sources\d3dutil.cpp" />

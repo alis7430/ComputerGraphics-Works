@@ -378,6 +378,8 @@
     <ClInclude Include="Sources\d3dUtility.h" />
     <ClInclude Include="Sources\dxutil.h" />
     <ClInclude Include="Sources\fps.h" />
+    <ClInclude Include="Sources\Interface.h" />
+    <ClInclude Include="Sources\pSystem.h" />
     <ClInclude Include="Sources\terrain.h" />
     <ResourceCompile Include="GraphicsFinalwork.rc" />
   </ItemGroup>
@@ -388,8 +390,12 @@
     <ClCompile Include="Sources\d3dUtility.cpp" />
     <ClCompile Include="Sources\dxutil.cpp" />
     <ClCompile Include="Sources\fps.cpp" />
+    <ClCompile Include="Sources\Interface.cpp" />
+    <ClCompile Include="Sources\pSystem.cpp" />
     <ClCompile Include="Sources\terrain.cpp" />
-    <ClCompile Include="Sources\terrainDriver.cpp" />
+    <ClCompile Include="Sources\terrainDriver.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+    </ClCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />

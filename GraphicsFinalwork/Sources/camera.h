@@ -1,5 +1,4 @@
-#ifndef __cameraH__
-#define __cameraH__
+#pragma once
 
 #include <d3dx9.h>
 
@@ -35,4 +34,3 @@ private:
 	D3DXVECTOR3 _look;
 	D3DXVECTOR3 _pos;
 };
-#endif // __cameraH__

@@ -1,11 +1,15 @@
 #include "d3dUtility.h"
 #include "terrain.h"
+#include "psystem.h"
 #include "camera.h"
 #include "fps.h"
+#include "Interface.h"
 
-//
+#include <cstdlib>
+#include <ctime>
+
+
 // Globals
-//
 
 IDirect3DDevice9* Device = 0; 
 
@@ -13,29 +17,41 @@ const int Width  = 640;
 const int Height = 480;
 
 Terrain* TheTerrain = 0;
+psys::PSystem* Sno = 0;
+
 Camera   TheCamera(Camera::LANDOBJECT);
 
 FPSCounter* FPS = 0;
+Interface* iface = 0;
 
-//
+
 // Framework Functions
-//
+
 bool Setup()
 {
 	//
 	// Create the terrain.
 	//
 
+	srand((unsigned int)time(0));
+
+
 	D3DXVECTOR3 lightDirection(0.0f, 1.0f, 0.0f);
 	TheTerrain = new Terrain(Device, "coastMountain64.raw", 64, 64, 10, 0.5f);
 	TheTerrain->genTexture(&lightDirection);
 
-	//
+	// Create the snow.
+
+	d3d::BoundingBox boundingBox;
+	boundingBox._min = D3DXVECTOR3(-250.0f, 0.0f, -250.0f);
+	boundingBox._max = D3DXVECTOR3(250.0f, 155.0f, 250.0f);
+	Sno = new psys::Snow(&boundingBox, 5000);
+	Sno->init(Device, "snowflake.dds");
+
 	// Create the font.
-	//
 
 	FPS = new FPSCounter(Device);
-
+	iface = new Interface(Device);
 	//
 	// Set texture filters.
 	//
@@ -44,9 +60,9 @@ bool Setup()
 	Device->SetSamplerState(0, D3DSAMP_MINFILTER, D3DTEXF_LINEAR);
 	Device->SetSamplerState(0, D3DSAMP_MIPFILTER, D3DTEXF_LINEAR);
 
-	//
+
 	// Set projection matrix.
-	//
+
 
 	D3DXMATRIX proj;
 	D3DXMatrixPerspectiveFovLH(
@@ -64,13 +80,14 @@ void Cleanup()
 {
 	d3d::Delete<Terrain*>(TheTerrain);
 	d3d::Delete<FPSCounter*>(FPS);
+	d3d::Delete<Interface*>(iface);
+	d3d::Delete<psys::PSystem*>(Sno);
 }
 
 bool Display(float timeDelta)
 {
-	//
 	// Update the scene:
-	//
+
 
 	if( Device )
 	{
@@ -80,22 +97,22 @@ bool Display(float timeDelta)
 		if( ::GetAsyncKeyState(VK_DOWN) & 0x8000f )
 			TheCamera.walk(-100.0f * timeDelta);
 
-		if( ::GetAsyncKeyState(VK_LEFT) & 0x8000f )
+		if( ::GetAsyncKeyState('A') & 0x8000f )
 			TheCamera.yaw(-1.0f * timeDelta);
 		
-		if( ::GetAsyncKeyState(VK_RIGHT) & 0x8000f )
+		if( ::GetAsyncKeyState('D') & 0x8000f )
 			TheCamera.yaw(1.0f * timeDelta);
 
-		if( ::GetAsyncKeyState('N') & 0x8000f )
+		if( ::GetAsyncKeyState(VK_LEFT) & 0x8000f )
 			TheCamera.strafe(-100.0f * timeDelta);
 
-		if( ::GetAsyncKeyState('M') & 0x8000f )
+		if( ::GetAsyncKeyState(VK_RIGHT) & 0x8000f )
 			TheCamera.strafe(100.0f * timeDelta);
 
-		if( ::GetAsyncKeyState('W') & 0x8000f )
+		if( ::GetAsyncKeyState('S') & 0x8000f )
 			TheCamera.pitch(1.0f * timeDelta);
 
-		if( ::GetAsyncKeyState('S') & 0x8000f )
+		if( ::GetAsyncKeyState('W') & 0x8000f )
 			TheCamera.pitch(-1.0f * timeDelta);
 
 		D3DXVECTOR3 pos;
@@ -108,9 +125,10 @@ bool Display(float timeDelta)
 		TheCamera.getViewMatrix(&V);
 		Device->SetTransform(D3DTS_VIEW, &V);
 
-		//
+		Sno->update(timeDelta);
+
 		// Draw the scene:
-		//
+
 
 		Device->Clear(0, 0, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, 0xff000000, 1.0f, 0);
 		Device->BeginScene();
@@ -118,11 +136,19 @@ bool Display(float timeDelta)
 		D3DXMATRIX I;
 		D3DXMatrixIdentity(&I);
 
+
 		if( TheTerrain )
 			TheTerrain->draw(&I, false);
 
 		if( FPS )
 			FPS->render(0xffffffff, timeDelta);
+		if (iface)
+			iface->render(0xffffffff, timeDelta, &pos);
+
+		D3DXMATRIX Y;
+		D3DXMatrixIdentity(&Y);
+		Device->SetTransform(D3DTS_WORLD, &Y);
+		Sno->render();
 
 		Device->EndScene();
 		Device->Present(0, 0, 0, 0);
@@ -130,9 +156,6 @@ bool Display(float timeDelta)
 	return true;
 }
 
-//
-// WndProc
-//
 LRESULT CALLBACK d3d::WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	switch( msg )
@@ -149,9 +172,7 @@ LRESULT CALLBACK d3d::WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	return ::DefWindowProc(hwnd, msg, wParam, lParam);
 }
 
-//
 // WinMain
-//
 int WINAPI WinMain(HINSTANCE hinstance,
 				   HINSTANCE prevInstance, 
 				   PSTR cmdLine,

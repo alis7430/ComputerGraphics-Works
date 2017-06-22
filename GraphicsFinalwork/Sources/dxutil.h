@@ -3,7 +3,7 @@
 
 
 //-----------------------------------------------------------------------------
-// Miscellaneous helper functions0
+// Miscellaneous helper functions
 //-----------------------------------------------------------------------------
 #define SAFE_DELETE(p)       { if(p) { delete (p);     (p)=NULL; } }
 #define SAFE_DELETE_ARRAY(p) { if(p) { delete[] (p);   (p)=NULL; } }

@@ -48,6 +48,12 @@
     <ClInclude Include="Sources\terrain.h">
       <Filter>Header</Filter>
     </ClInclude>
+    <ClInclude Include="Sources\pSystem.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Interface.h">
+      <Filter>Header</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Sources\camera.cpp">
@@ -72,6 +78,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Sources\dxutil.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\pSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Interface.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

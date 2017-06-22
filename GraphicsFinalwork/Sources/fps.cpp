@@ -5,7 +5,7 @@ FPSCounter::FPSCounter(IDirect3DDevice9* device)
 {
 	_device = device;
 
-	_font = new CD3DFont("Times New Roman", 24, 0);
+	_font = new CD3DFont("ARBONNIE", 15, 0);
 	_font->InitDeviceObjects( _device );
 	_font->RestoreDeviceObjects();
 
@@ -36,8 +36,8 @@ bool FPSCounter::render(D3DCOLOR color, float timeDelta)
 		{
 			_fps = (float)_frameCnt / _timeElapsed;
 
-			sprintf(_fpsString, "%f", _fps);
-			_fpsString[8] = '\0'; // mark end of string
+			sprintf(_fpsString, "FPS : %f", _fps);
+			_fpsString[8] = '\0'; 
 
 			_timeElapsed = 0.0f;
 			_frameCnt    = 0;
